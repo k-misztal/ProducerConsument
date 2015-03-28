@@ -7,16 +7,24 @@ import java.util.concurrent.BlockingQueue;
  */
 public class Producer implements Runnable {
     private BlockingQueue<Integer> blockingQueue;
+    private String name = "Producer";
 
     public Producer(BlockingQueue<Integer> blockingQueue) {
         this.blockingQueue = blockingQueue;
+    }
+
+    public Producer(BlockingQueue<Integer> blockingQueue, String name) {
+        this.blockingQueue = blockingQueue;
+        this.name = name;
     }
 
     @Override
     public void run() {
         try {
             while (true) {
-                blockingQueue.put(produce());
+                int val = produce();
+                blockingQueue.put(val);
+                System.out.println(name + ": value [" + val + "] inserted into queue");
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -24,6 +32,8 @@ public class Producer implements Runnable {
     }
 
     Integer produce() {
-        return 1;
+        int val = 1;
+        System.out.println(name + ": produced value [" + val + "], attempting to put into queue...");
+        return val;
     }
 }
